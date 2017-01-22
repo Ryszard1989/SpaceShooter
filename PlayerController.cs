@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 
 
 
-    public GameObject gun;
+    public GameObject shotSpawnRotationFix; //TODO - Need to find how to ignore the tilted rotation during Instantiate.
     private float nextFire;
     private int weaponLevelMax;
 
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour {
     {
         rb = GetComponent<Rigidbody>();
         //Finds and assigns the child of the player named "ShotSpawns".
-        gun = transform.Find("ShotSpawns").gameObject;
+        shotSpawnRotationFix = transform.Find("ShotSpawns").gameObject;
         audioSource = GetComponent<AudioSource>();
         weaponLevelMax = weaponSelector.Length;
         Debug.Log("weaponLevelMax: " + weaponLevelMax);
@@ -63,7 +63,9 @@ public class PlayerController : MonoBehaviour {
         {
             nextFire = Time.time + fireRate;
             foreach (var shotSpawn in weaponSelector[weaponLevel].shotSpawns) {
-                //Can change position here?
+                //TODO - Work out how to ignore y rotation during instantiate.
+                //new Vector3(shotSpawn.position.x, 0.0f, shotSpawn.position.z)
+                //customRotation = Quaternion.Euler(shotSpawn.rotation.x, 0.0f, shotSpawn.rotation.z);
                 Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
             }
             audioSource.Play();
@@ -87,12 +89,12 @@ public class PlayerController : MonoBehaviour {
 
         rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * -tilt);
 
-        //If the child was found, lock the guns rotation
-        if (gun != null)
+        //If the child was found, lock the shotspawn rotation
+        if (shotSpawnRotationFix != null)
         {
-            gun.transform.rotation = Quaternion.identity;
+            shotSpawnRotationFix.transform.rotation = Quaternion.identity;
         }
-        else Debug.Log("No child with the name 'Gun' attached to the player");
+        else Debug.Log("No child with the name 'ShotSpawns' attached to the player");
 
 
 
