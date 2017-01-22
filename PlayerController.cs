@@ -7,21 +7,32 @@ public class Boundary
     public float xMin, xMax, zMin, zMax;
 }
 
+[System.Serializable]
+public class WeaponSelector
+{
+    public Transform[] shotSpawns;
+}
+
 public class PlayerController : MonoBehaviour {
 
     public float speed;
     public float tilt;
     public Boundary boundary;
 
+    public WeaponSelector[] weaponSelector;
     public GameObject shot;
-    public Transform[] shotSpawns;
     public float fireRate;
+    public int weaponLevel;
+
+
 
     public GameObject gun;
     private float nextFire;
+    private int weaponLevelMax;
 
     private Rigidbody rb;
     private AudioSource audioSource;
+
 
     void Start()
     {
@@ -29,15 +40,30 @@ public class PlayerController : MonoBehaviour {
         //Finds and assigns the child of the player named "ShotSpawns".
         gun = transform.Find("ShotSpawns").gameObject;
         audioSource = GetComponent<AudioSource>();
-
+        weaponLevelMax = weaponSelector.Length;
+        Debug.Log("weaponLevelMax: " + weaponLevelMax);
     }
 
     void Update ()
     {
+        //Hack to upgrade weapons in game
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            if (weaponLevel >= weaponLevelMax-1)
+            {
+                weaponLevel = 0;
+            }
+            else
+            {
+                weaponLevel++;
+            }
+        }
+
         if (Input.GetButton("Fire1") && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-            foreach (var shotSpawn in shotSpawns) {
+            foreach (var shotSpawn in weaponSelector[weaponLevel].shotSpawns) {
+                //Can change position here?
                 Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
             }
             audioSource.Play();

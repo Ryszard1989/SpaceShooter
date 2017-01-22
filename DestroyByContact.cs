@@ -39,7 +39,8 @@ public class DestroyByContact : MonoBehaviour
         }
         Debug.Log("DestroyByContact:Other: " + other);
         //*COMMENT TO TEST*
-        gameController.AddScore(scoreValue);
+        //gameController.AddScore(scoreValue);
+
         Destroy(other.gameObject);
         Destroy(gameObject);
     }
