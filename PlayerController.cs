@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour {
     {
         rb = GetComponent<Rigidbody>();
         //Finds and assigns the child of the player named "ShotSpawns".
+        //TODO - Remove Tilt_hack_fix for losing bullets. See below comments.
         shotSpawnRotationFix = transform.Find("ShotSpawns").gameObject;
         audioSource = GetComponent<AudioSource>();
         weaponLevelMax = weaponSelector.Length;
@@ -51,43 +52,16 @@ public class PlayerController : MonoBehaviour {
         {
             UpgradeWeapon();
         }
-
         if (Input.GetButton("Fire1") && Time.time > nextFire)
         {
-            nextFire = Time.time + fireRate;
-            foreach (var shotSpawn in weaponSelector[weaponLevel].shotSpawns) {
-                //TODO - Work out how to ignore y rotation during instantiate.
-                //new Vector3(shotSpawn.position.x, 0.0f, shotSpawn.position.z)
-                //customRotation = Quaternion.Euler(shotSpawn.rotation.x, 0.0f, shotSpawn.rotation.z);
-                Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-            }
-            audioSource.Play();
+            FireWeapon();            
         }
     }
 
     void FixedUpdate ()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        rb.velocity = movement * speed;
-
-        rb.position = new Vector3
-        (
-            Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
-            0.0f,
-            Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
-        );
-
-        rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * -tilt);
-
-        //If the child was found, lock the shotspawn rotation
-        if (shotSpawnRotationFix != null)
-        {
-            shotSpawnRotationFix.transform.rotation = Quaternion.identity;
-        }
-        else Debug.Log("No child with the name 'ShotSpawns' attached to the player");
+        PlayerMovement();
+        PlayerShipTilt();
     }
 
     public void UpgradeWeapon()
@@ -101,6 +75,49 @@ public class PlayerController : MonoBehaviour {
             weaponLevel++;
         }
     }
+
+    private void FireWeapon()
+    {
+        nextFire = Time.time + fireRate;
+        foreach (var shotSpawn in weaponSelector[weaponLevel].shotSpawns)
+        {
+            //TODO - Remove Tilt_hack_fix. Work out how to ignore y rotation during instantiate.
+            //new Vector3(shotSpawn.position.x, 0.0f, shotSpawn.position.z)
+            //customRotation = Quaternion.Euler(shotSpawn.rotation.x, 0.0f, shotSpawn.rotation.z);
+            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+        }
+        audioSource.Play();
+    }
+
+    private void PlayerMovement()
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        rb.velocity = movement * speed;
+
+        rb.position = new Vector3
+        (
+            Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
+            0.0f,
+            Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
+        );
+    }
+
+    private void PlayerShipTilt()
+    {
+        rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * -tilt);
+        //If the child was found, lock the shotspawn rotation
+        //TODO - Remove Tilt_hack_fix. Fix with ignoring rotation of the bullet below rather than correcting.
+        if (shotSpawnRotationFix != null)
+        {
+            shotSpawnRotationFix.transform.rotation = Quaternion.identity;
+        }
+        else Debug.Log("No child with the name 'ShotSpawns' attached to the player");
+    }
+
+   
 
 
 

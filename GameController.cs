@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -50,13 +51,10 @@ public class GameController : MonoBehaviour
             if (Input.GetKeyDown (KeyCode.R))
             {
                 //TODO - Obsolete
-                Application.LoadLevel(Application.loadedLevel);
+                //Application.LoadLevel(Application.loadedLevel);
+                SceneManager.LoadScene("Main_Extended");
+
             }
-        }
-        if (score >= scoreWeaponLevelValues[weaponLevel])
-        {
-            playerController.UpgradeWeapon();
-            weaponLevel++;
         }
     }
 
@@ -87,6 +85,12 @@ public class GameController : MonoBehaviour
     {
         score += newScoreValue;
         UpdateScore();
+        //Level up weapon based on score thresholds. Make sure to make top level weapon score unreachably high.
+        if (score >= scoreWeaponLevelValues[weaponLevel])
+        {
+            playerController.UpgradeWeapon();
+            weaponLevel++;
+        }
 
     }
 
