@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -12,19 +13,33 @@ public class GameController : MonoBehaviour
 
     public GUIText scoreText;
     private int score;
+    public int[] scoreWeaponLevelValues;
+    private int weaponLevel;
     public GUIText restartText;
     public GUIText gameOverText;
 
     private bool gameOver;
     private bool restart;
 
+    private PlayerController playerController;
+
     void Start ()
     {
+        GameObject playerControllerObject = GameObject.FindWithTag("Player");
+        if (playerControllerObject != null)
+        {
+            playerController = playerControllerObject.GetComponent<PlayerController>();
+        }
+        else
+        {
+            Debug.Log("Cannot find 'PlayerController' script");
+        }
         gameOver = false;
         restart = false;
         restartText.text = "";
         gameOverText.text = "";
         score = 0;
+        weaponLevel = 0;
         UpdateScore();
         StartCoroutine (SpawnWaves());
     }
@@ -36,7 +51,9 @@ public class GameController : MonoBehaviour
             if (Input.GetKeyDown (KeyCode.R))
             {
                 //TODO - Obsolete
-                Application.LoadLevel(Application.loadedLevel);
+                //Application.LoadLevel(Application.loadedLevel);
+                SceneManager.LoadScene("Main_Extended");
+
             }
         }
     }
@@ -68,6 +85,12 @@ public class GameController : MonoBehaviour
     {
         score += newScoreValue;
         UpdateScore();
+        //Level up weapon based on score thresholds. Make sure to make top level weapon score unreachably high.
+        if (score >= scoreWeaponLevelValues[weaponLevel])
+        {
+            playerController.UpgradeWeapon();
+            weaponLevel++;
+        }
 
     }
 
