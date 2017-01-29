@@ -12,19 +12,33 @@ public class GameController : MonoBehaviour
 
     public GUIText scoreText;
     private int score;
+    public int[] scoreWeaponLevelValues;
+    private int weaponLevel;
     public GUIText restartText;
     public GUIText gameOverText;
 
     private bool gameOver;
     private bool restart;
 
+    private PlayerController playerController;
+
     void Start ()
     {
+        GameObject playerControllerObject = GameObject.FindWithTag("Player");
+        if (playerControllerObject != null)
+        {
+            playerController = playerControllerObject.GetComponent<PlayerController>();
+        }
+        else
+        {
+            Debug.Log("Cannot find 'PlayerController' script");
+        }
         gameOver = false;
         restart = false;
         restartText.text = "";
         gameOverText.text = "";
         score = 0;
+        weaponLevel = 0;
         UpdateScore();
         StartCoroutine (SpawnWaves());
     }
@@ -38,6 +52,11 @@ public class GameController : MonoBehaviour
                 //TODO - Obsolete
                 Application.LoadLevel(Application.loadedLevel);
             }
+        }
+        if (score >= scoreWeaponLevelValues[weaponLevel])
+        {
+            playerController.UpgradeWeapon();
+            weaponLevel++;
         }
     }
 

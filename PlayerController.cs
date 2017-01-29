@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 
 
 
-    public GameObject shotSpawnRotationFix; //TODO - Need to find how to ignore the tilted rotation during Instantiate.
+    private GameObject shotSpawnRotationFix; //TODO - Need to find how to ignore the tilted rotation during Instantiate.
     private float nextFire;
     private int weaponLevelMax;
 
@@ -49,14 +49,7 @@ public class PlayerController : MonoBehaviour {
         //Hack to upgrade weapons in game
         if(Input.GetKeyDown(KeyCode.B))
         {
-            if (weaponLevel >= weaponLevelMax-1)
-            {
-                weaponLevel = 0;
-            }
-            else
-            {
-                weaponLevel++;
-            }
+            UpgradeWeapon();
         }
 
         if (Input.GetButton("Fire1") && Time.time > nextFire)
@@ -95,9 +88,18 @@ public class PlayerController : MonoBehaviour {
             shotSpawnRotationFix.transform.rotation = Quaternion.identity;
         }
         else Debug.Log("No child with the name 'ShotSpawns' attached to the player");
+    }
 
-
-
+    public void UpgradeWeapon()
+    {
+        if (weaponLevel >= weaponLevelMax - 1)
+        {
+            weaponLevel = 0;
+        }
+        else
+        {
+            weaponLevel++;
+        }
     }
 
 
