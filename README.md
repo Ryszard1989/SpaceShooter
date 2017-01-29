@@ -24,7 +24,7 @@ Unity tutorial and extension work
 
 ##Techdebt:
 
-*Fix rotation issue with tilt and shotspawns (without the hack resetting it
+* Fix rotation issue with tilt and shotspawns (without the hack resetting it
 ```c#
 transform.rotation = Quaternion.Euler(transform.rotation.x, master.transform.rotation.y, transform.rotation.x);
 Instantiate(shot, new Vector3(shotSpawn.position.x, 0.0f, shotSpawn.position.z), new Quaternion(shotSpawn.transform.eulerAngles.x, 0.0f, shotSpawn.transform.eulerAngles.z));
