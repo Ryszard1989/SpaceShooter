@@ -5,7 +5,9 @@ Unity tutorial and extension work
 * Levels - 
   * More enemies/Faster enemies.
   * Level text "Level 1" "Level 1 Complete!"
-  * Enemies take more hits to kill (prereq to bosses). Collision with player an issue?
+  * **DONE 05/02** Enemies take more hits to kill (prereq to bosses).
+  * Have enemy hits controlled by game controller
+  * Make seperate levels. Consider procedural, else fill spawn arrays manually.
   * Boss (start with enlarged enemy. Look for asset?).
   * Background - pan out. expand Boundary. Will work well to diminish weapon upgrade benefit and later levels.
   
