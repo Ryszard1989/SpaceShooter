@@ -9,7 +9,9 @@ public class GameController : MonoBehaviour
     public int hazardCount;
     public float spawnWait;
     public float startWait;
-    public float waveWait;
+    public float waveToClearScreenWait;
+    public float levelCompleteTextTime;
+    public float nextWaveWait;
 
     public GUIText scoreText;
     private int score;
@@ -17,9 +19,12 @@ public class GameController : MonoBehaviour
     private int weaponLevel;
     public GUIText restartText;
     public GUIText gameOverText;
+    public GUIText levelCompleteText;
+    private int levelNumberText = 1;
 
     private bool gameOver;
     private bool restart;
+    private bool levelComplete;
 
     private PlayerController playerController;
 
@@ -36,8 +41,10 @@ public class GameController : MonoBehaviour
         }
         gameOver = false;
         restart = false;
+        levelComplete = false;
         restartText.text = "";
         gameOverText.text = "";
+        levelCompleteText.text = "";
         score = 0;
         weaponLevel = 0;
         UpdateScore();
@@ -60,6 +67,8 @@ public class GameController : MonoBehaviour
 
     IEnumerator SpawnWaves ()
     {
+        levelComplete = false;
+        levelCompleteText.text = "";
         yield return new WaitForSeconds(startWait);
         while (true)
         {
@@ -71,7 +80,16 @@ public class GameController : MonoBehaviour
                 Instantiate(hazard, spawnPosition, spawnRotation);
                 yield return new WaitForSeconds(spawnWait);
             }
-            yield return new WaitForSeconds(waveWait);
+            yield return new WaitForSeconds(waveToClearScreenWait);
+            if (!gameOver) //Can't refactor yield WaitForSeconds into void function?
+            {
+                levelCompleteText.text = "Level " + levelNumberText + " Complete!";
+                levelComplete = true;
+                levelNumberText++;
+                yield return new WaitForSeconds(levelCompleteTextTime);
+                levelCompleteText.text = "";
+                yield return new WaitForSeconds(nextWaveWait);
+            }
             if (gameOver)
             {
                 restartText.text = "Press 'R' for Restart";
@@ -97,6 +115,16 @@ public class GameController : MonoBehaviour
     void UpdateScore ()
     {
         scoreText.text = "Score: " + score;
+    }
+
+    IEnumerator ShowLevelCompleteText() //When I use this times go all messed up. Read up on co-routines.
+    {
+        levelCompleteText.text = "Level " + levelNumberText + " Complete!";
+        levelComplete = true;
+        levelNumberText++;
+        yield return new WaitForSeconds(levelCompleteTextTime);
+        levelCompleteText.text = "";
+        yield return new WaitForSeconds(nextWaveWait);
     }
 
     public void GameOver ()
