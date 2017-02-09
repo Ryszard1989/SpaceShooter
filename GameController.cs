@@ -57,8 +57,6 @@ public class GameController : MonoBehaviour
         {
             if (Input.GetKeyDown (KeyCode.R))
             {
-                //TODO - Obsolete
-                //Application.LoadLevel(Application.loadedLevel);
                 SceneManager.LoadScene("Main_Extended");
 
             }
@@ -81,7 +79,7 @@ public class GameController : MonoBehaviour
                 yield return new WaitForSeconds(spawnWait);
             }
             yield return new WaitForSeconds(waveToClearScreenWait);
-            if (!gameOver) //Can't refactor yield WaitForSeconds into void function?
+            if (!gameOver) //TODO - Can't refactor yield WaitForSeconds into void function?
             {
                 levelCompleteText.text = "Level " + levelNumberText + " Complete!";
                 levelComplete = true;
@@ -117,7 +115,7 @@ public class GameController : MonoBehaviour
         scoreText.text = "Score: " + score;
     }
 
-    IEnumerator ShowLevelCompleteText() //When I use this times go all messed up. Read up on co-routines.
+    IEnumerator ShowLevelCompleteText() //TODO - When I use this times go all messed up. Read up on co-routines.
     {
         levelCompleteText.text = "Level " + levelNumberText + " Complete!";
         levelComplete = true;
