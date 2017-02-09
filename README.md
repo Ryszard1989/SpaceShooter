@@ -4,7 +4,7 @@ Unity tutorial and extension work
 ##Goals:
 * Levels - 
   * More enemies/Faster enemies.
-  * Level text "Level 1" "Level 1 Complete!"
+  * **DONE 09/02** Level text "Level 1" "Level 1 Complete!"
   * **DONE 05/02** Enemies take more hits to kill (prereq to bosses).
   * Have enemy hits controlled by game controller
   * Make seperate levels. Consider procedural, else fill spawn arrays manually.
