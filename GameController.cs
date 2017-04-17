@@ -72,7 +72,16 @@ public class GameController : MonoBehaviour
         {
             for (int i = 0; i < hazardCount[waveLevel]; i++)
             {
-                GameObject hazard = hazards[Random.Range(0, hazards.Length)];
+                GameObject hazard;
+                if(waveLevel == 5) //BOSS level
+                {
+                    hazard = hazards[4];
+                    //TODO - edit speed/size/fire rate for boss unit.
+                }
+                else
+                {
+                    hazard = hazards[Random.Range(0, hazards.Length)];
+                }                
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(hazard, spawnPosition, spawnRotation);
