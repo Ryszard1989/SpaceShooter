@@ -6,7 +6,7 @@ public class DestroyByContact : MonoBehaviour
     public GameObject enemyKilledExplosion;
     public GameObject playerKilledExplosion;
     public GameObject enemyHitExplosion;
-    public int shotsToKill;
+    public int[] shotsToKill;
     public int scoreValue;
     private GameController gameController;
     private int shotsTaken;
@@ -26,6 +26,7 @@ public class DestroyByContact : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        
         //if(other.tag == "Boundary" || other.tag == "Enemy")
         if(other.CompareTag("Boundary") || other.CompareTag("Enemy"))
         {
@@ -35,7 +36,7 @@ public class DestroyByContact : MonoBehaviour
         {
             enemyHit(other);
         }
-        if (enemyKilledExplosion != null && shotsTaken >= shotsToKill)
+        if (enemyKilledExplosion != null && shotsTaken >= shotsToKill[gameController.waveLevel])
         {
             enemyKilled(other);
         }

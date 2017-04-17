@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
 {
     public GameObject[] hazards;
     public Vector3 spawnValues;
-    public int hazardCount;
+    public int[] hazardCount;
     public float spawnWait;
     public float startWait;
     public float waveToClearScreenWait;
@@ -20,7 +20,7 @@ public class GameController : MonoBehaviour
     public GUIText restartText;
     public GUIText gameOverText;
     public GUIText levelCompleteText;
-    private int levelNumberText = 1;
+    public int waveLevel = 1;
 
     private bool gameOver;
     private bool restart;
@@ -70,7 +70,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            for (int i = 0; i < hazardCount; i++)
+            for (int i = 0; i < hazardCount[waveLevel]; i++)
             {
                 GameObject hazard = hazards[Random.Range(0, hazards.Length)];
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
@@ -81,9 +81,9 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(waveToClearScreenWait);
             if (!gameOver) //TODO - Can't refactor yield WaitForSeconds into void function?
             {
-                levelCompleteText.text = "Level " + levelNumberText + " Complete!";
+                levelCompleteText.text = "Level " + waveLevel + " Complete!";
                 levelComplete = true;
-                levelNumberText++;
+                waveLevel++;
                 yield return new WaitForSeconds(levelCompleteTextTime);
                 levelCompleteText.text = "";
                 yield return new WaitForSeconds(nextWaveWait);
@@ -117,9 +117,9 @@ public class GameController : MonoBehaviour
 
     IEnumerator ShowLevelCompleteText() //TODO - When I use this times go all messed up. Read up on co-routines.
     {
-        levelCompleteText.text = "Level " + levelNumberText + " Complete!";
+        levelCompleteText.text = "Level " + waveLevel + " Complete!";
         levelComplete = true;
-        levelNumberText++;
+        waveLevel++;
         yield return new WaitForSeconds(levelCompleteTextTime);
         levelCompleteText.text = "";
         yield return new WaitForSeconds(nextWaveWait);
