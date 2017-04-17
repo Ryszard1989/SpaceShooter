@@ -3,12 +3,14 @@ Unity tutorial and extension work
 
 ##Goals:
 * Levels - 
-  * More enemies/Faster enemies.
+  * **DONE 17/04** More enemies based on level
+  * Faster enemies.
   * **DONE 09/02** Level text "Level 1" "Level 1 Complete!"
   * **DONE 05/02** Enemies take more hits to kill (prereq to bosses).
-  * Have enemy hits controlled by game controller
+  * **DONE 17/04** Have enemy hits controlled by game controller
   * Make seperate levels. Consider procedural, else fill spawn arrays manually.
-  * Boss (start with enlarged enemy. Look for asset?).
+  * **DONE 17/04** Boss basic (specific enemy. Lots of hits to kill)
+  * Boss that looks like boss (start with enlarged enemy. Look for asset?). Include different level text.
   * Background - pan out. expand Boundary. Will work well to diminish weapon upgrade benefit and later levels.
   
 * Enemies -
